@@ -1,17 +1,62 @@
-\documentclass{article}
+\documentclass[12pt]{article}
 \usepackage[utf8]{inputenc}
-\title{Relatório AV2 - FreeBSD}
-\author{Equipe}
+\usepackage[brazil]{fontenc}
+\usepackage[portuguese]{babel}
+\usepackage{graphicx}
+
+\title{Relatório Técnico: Sistema Operacional FreeBSD \\ \large Apresentação AV2 \\ Professor Aderlan}
+\author{
+Arlloudy Ryan da Conceição Araújo \\
+Brian Kevin da Silva Figueredo \\
+Mayck Mitchel Cavalcante da Silva \\ 
+Chayenne Laiza da Silva \\
+Felipe Marques Argemiro \\
+Michel Yves Pereira Costa\\
+}
+\date{Junho de 2026}
+
 \begin{document}
+
 \maketitle
-\section{Estrutura do SO}
-O Freebsd utiliza uma hierarquia padrao unix, visivel em / bin,/ etc,/usr,/var.
--/bin:comandos essenciais.
--/etc:configuracoes do sistema.
--/usr:aplicativos dos usuarios.
--/var:logs e banco de dados (MySQL).
-\section{Kernel}
-O sistema utiliza o kernel monolitico FreeBSD 15.0-RELEASE.
+
+\newpage
+
+\section{Introdução e Estrutura do SO}
+O FreeBSD é um sistema operacional livre do tipo Unix-like, derivado do BSD desenvolvido pela Universidade de Berkeley. Ele é amplamente reconhecido por sua robustez, foco em segurança e excelente desempenho em ambientes de rede e servidores de grande porte. 
+
+A árvore de diretórios do FreeBSD adota uma separação rígida entre o sistema base e os softwares de terceiros:
+\begin{itemize}
+    \item \textbf{/bin e /sbin:} Contêm os comandos e binários essenciais para a operação do sistema básico.
+    \item \textbf{/etc:} Guarda todos os arquivos de configuração locais do sistema.
+    \item \textbf{/usr/local:} Isolamento estrito onde são instalados todos os pacotes e programas de terceiros (via pkg ou ports), garantindo que arquivos externos não baguncem o sistema operacional principal.
+\end{itemize}
+
+\section{O Kernel do FreeBSD}
+O Kernel do FreeBSD possui uma arquitetura majoritariamente monolítica, o que significa que os principais serviços do sistema (como gerenciamento de memória, sistemas de arquivos e subsistemas de rede) rodam e compartilham o mesmo espaço de endereçamento principal para máxima performance. 
+
+Apesar de monolítico, ele é altamente modular. O FreeBSD permite que drivers de dispositivos e novas funcionalidades sejam carregados ou descarregados dinamicamente da memória em tempo de execução, sem a necessidade de reiniciar a máquina. Isso é feito de forma simples através dos seguintes utilitários no terminal:
+\begin{itemize}
+    \item \texttt{kldstat}: Lista todos os módulos atualmente carregados no kernel.
+    \item \texttt{kldload}: Carrega um novo módulo (ex: um driver de rede ou sistema de arquivos).
+    \item \texttt{kldunload}: Descarrega um módulo específico da memória.
+\end{itemize}
+
+\section{Linguagem de Scripting e Automação}
+Como exemplo de linguagem aplicável no sistema para administração e automação, o FreeBSD conta nativamente com interpretadores de comandos (Shells) como o \texttt{sh} (Bourne Shell) e o \texttt{tcsh}. 
+
+Abaixo, apresenta-se um exemplo prático de um \textit{Shell Script} criado para automatizar o backup dos arquivos de configuração do sistema:
+
+\begin{verbatim}
+#!/bin/sh
+# Script de automação de backup para o FreeBSD
+
+echo "Iniciando o backup do sistema base..."
+tar -czf /tmp/backup_configuracoes.tar.gz /etc
+
+echo "Verificando o arquivo gerado:"
+ls -lh /tmp/backup_configuracoes.tar.gz
+
+echo "Backup concluído com sucesso!"
+\end{verbatim}
+
 \end{document}
-
-
